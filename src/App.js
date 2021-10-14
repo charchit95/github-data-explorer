@@ -1,8 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './App.css';
 import axios from "axios";
 
 function App() {
+
+  const [monitized, setMonitized] = useState(false);
+  
+  useEffect(() => {
+    if (document.monetization) {
+      document.monetization.addEventListener('monetizationstart', () => {
+        setMonitized(true)
+      })
+    }
+  }, [])
 
   const [name, setName] = useState("");
   const [userData, setUserData] = useState(false);
@@ -34,6 +44,7 @@ function App() {
               <h1>Your Github Username is </h1>
               <input type="text" name="username" value={name} onChange={(e) => setName(e.target.value)}></input>
             </div>
+            {monitized && <h5 style={{margin: 0, marginBottom: "2rem"}}>You are a monetized user. Thank you for your support!</h5>}
             <button onClick={() => getData(name)} className="submit">Submit</button>
           </>
         )
